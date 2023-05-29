@@ -1,18 +1,24 @@
-let s = 10;
-let w = 16;
-let h = 9;
-let xoff = 0;
-let yoff = 0;
-let moveView = true;
+let pixelSize = 10;
+let gridWidth = 16;
+let gridHeight = 9;
+let xOffset = 0;
+let yOffset = 0;
+let xGap = 0;
+let yGap = 0;
+let moveView = false;
 
 let arr = [];
 
+function toggleViewMode() {
+    if (moveView) moveView = false;
+    else moveView = true;
+}
+
 function setup() {
     arr = [];
-    colorMode(RGB);
-    for (let y = 0; y < h; ++y) {
+    for (let y = 0; y < gridHeight; ++y) {
         narr = [];
-        for (let x = 0; x < w; ++x) {
+        for (let x = 0; x < gridWidth; ++x) {
             c = "#ff0000";
             narr.push(c);
         }
@@ -20,24 +26,25 @@ function setup() {
     }
     createCanvas(windowWidth, windowHeight);
     b = createButton("hi");
-    b.position(100, 100);
-    b.class("m-4 w-24 rounded bg-blue-300 p-1 shadow");
+    b.mousePressed(toggleViewMode);
+    b.position(10, 10);
+    b.class("m-4 w-24 rounded bg-blue-300 p-1 shadow hover:bg-blue-400");
     // pick = createColorPicker()
     frameRate(30);
     fill("red");
-    console.log(arr);
-    drawGrid((width - s * w) / 2 + xoff, (height - s * h) / 2 + yoff, s);
+    // console.log(arr);
+    drawGrid();
 }
 
-function drawGrid(gx, gy, gs) {
+function drawGrid() {
+    xGap = (width - pixelSize * gridWidth) / 2 + xOffset;
+    yGap = (height - pixelSize * gridHeight) / 2 + yOffset;
     background(220);
-    fill("red");
-    text(moveView, 100, 100);
-    for (let y = 0; y < h; ++y) {
-        for (let x = 0; x < w; ++x) {
-            console.log(arr[y][x]);
+    for (let y = 0; y < gridHeight; ++y) {
+        for (let x = 0; x < gridWidth; ++x) {
+            // console.log(arr[y][x]);
             fill(arr[y][x]);
-            square(gx + gs * x, gy + gs * y, gs);
+            square(xGap + pixelSize * x, yGap + pixelSize * y, pixelSize);
         }
     }
 }
@@ -45,35 +52,40 @@ function drawGrid(gx, gy, gs) {
 function mouseWheel(event) {
     if (event.delta > 0)
         // zoom out
-        s /= 1.5;
+        pixelSize /= 1.5;
     // zoom in
-    else s *= 1.5;
+    else pixelSize *= 1.5;
     // fill("red");
-    drawGrid((width - s * w) / 2 + xoff, (height - s * h) / 2 + yoff, s);
+    drawGrid();
 }
 
 function mouseDragged(event) {
     if (moveView) {
         // console.log(event);
-        xoff += event.movementX;
-        yoff += event.movementY;
-        drawGrid((width - s * w) / 2 + xoff, (height - s * h) / 2 + yoff, s);
-    }
-}
-
-function mousePressed() {
-    if (
-        !moveView &&
-        mouseX > (width - s * w) / 2 + xoff &&
-        mouseX < (width - s * w) / 2 + xoff + s * w &&
-        mouseY > (height - s * h) / 2 + yoff &&
-        mouseY < (height - s * h) / 2 + yoff + s * h
+        xOffset += event.movementX;
+        yOffset += event.movementY;
+        drawGrid();
+    } else if (
+        mouseX > (width - pixelSize * gridWidth) / 2 + xOffset &&
+        mouseX <
+            (width - pixelSize * gridWidth) / 2 +
+                xOffset +
+                pixelSize * gridWidth &&
+        mouseY > (height - pixelSize * gridHeight) / 2 + yOffset &&
+        mouseY <
+            (height - pixelSize * gridHeight) / 2 +
+                yOffset +
+                pixelSize * gridHeight
     ) {
-        fill("blue");
-        circle(mouseX, mouseY, 10);
+        canX = floor((mouseX - xGap) / pixelSize);
+        canY = floor((mouseY - yGap) / pixelSize);
+        console.log(canX, canY);
+        arr[canY][canX] = "#00ff00";
+        drawGrid();
     }
 }
 
 function windowResized() {
-    setup();
+    resizeCanvas(windowWidth, windowHeight);
+    drawGrid();
 }

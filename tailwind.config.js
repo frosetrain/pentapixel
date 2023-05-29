@@ -3,7 +3,7 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-    content: ["./index.html", "./src/*.js"],
+    content: ["./index.html", "./*.js"],
     theme: {
         fontFamily: {
             sans: ["Inter", "system-ui", "sans-serif"],
