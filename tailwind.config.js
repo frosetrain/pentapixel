@@ -11,7 +11,7 @@ module.exports = {
         },
         extend: {
             colors: {
-                accent: colors.sky,
+                accent: colors.red,
             },
         },
     },
