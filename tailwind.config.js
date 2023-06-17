@@ -11,9 +11,10 @@ module.exports = {
         },
         extend: {
             colors: {
-                accent: colors.red,
+                accent: colors.emerald,
             },
         },
     },
     plugins: [],
+    darkMode: "class",
 };
