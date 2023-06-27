@@ -113,8 +113,20 @@ function setup() {
     };
     tooltip2.mousePressed(dismissTooltip);
 
+    rightBtnDiv = createDiv();
+    rightBtnDiv.parent(headerbar);
+    rightBtnDiv.class("flex gap-4");
+    sourceCodeBtn = createA(
+        "https://github.com/frosetrain/pentapixel",
+        "Source Code"
+    );
+    sourceCodeBtn.parent(rightBtnDiv);
+    sourceCodeBtn.class(
+        "text-black dark:text-white my-auto rounded-lg dark:bg-accent-700 dark:hover:bg-accent-600 bg-accent-300 hover:bg-accent-400 px-2 py-1 shadow" +
+            transition
+    );
     colorModeBtn = createButton();
-    colorModeBtn.parent(headerbar);
+    colorModeBtn.parent(rightBtnDiv);
     colorModeBtn.class(
         "text-black dark:text-white my-auto rounded-full dark:bg-accent-700 dark:hover:bg-accent-600 bg-accent-300 hover:bg-accent-400 p-2 shadow" +
             transition
