@@ -49,7 +49,6 @@ let rectY0;
 let rectX1;
 let rectY1;
 let currentLayer = 0;
-let fill = false;
 
 function switchTheme() {
     localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
@@ -313,12 +312,22 @@ function drawRect(x0, y0, x1, y1) {
     if (x1 < x0) [x1, x0] = [x0, x1];
     if (y1 < y0) [y1, y0] = [y0, y1];
     if (checkbox.checked()) {
-        for (let x = x0; x < x1; ++x) {
-            for (let y = y0; y < y1; ++y) {
-                arr[y][x] = tool === 1 ? twColors[color] : "";
+        for (let x = x0; x <= x1; ++x) {
+            for (let y = y0; y <= y1; ++y) {
+                arr[currentLayer][y][x] = twColors[color];
             }
         }
+    } else {
+        for (let x = x0; x <= x1; ++x) {
+            arr[currentLayer][y0][x] = twColors[color];
+            arr[currentLayer][y1][x] = twColors[color];
+        }
+        for (let y = y0; y <= y1; ++y) {
+            arr[currentLayer][y][x0] = twColors[color];
+            arr[currentLayer][y][x1] = twColors[color];
+        }
     }
+    drawGrid();
 }
 
 function mousePressed() {
